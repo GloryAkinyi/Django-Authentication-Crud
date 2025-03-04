@@ -27,7 +27,7 @@
           </div>
           <div class="row">
             <div class="col-md-4 form-group mt-3">
-              <input type="date" name="date" class="form-control datepicker" id="date" value="{{ appointment.date }}" placeholder="Appointment Date" required>
+              <input type="date"  value="{{ appointment.date|date:'Y-m-d' }}"  name="date" class="form-control datepicker" id="date" value="{{ appointment.date }}" placeholder="Appointment Date" required>
             </div>
             <div class="col-md-4 form-group mt-3">
               <select name="department" id="department" class="form-select">
