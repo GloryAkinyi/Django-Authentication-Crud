@@ -1,0 +1,68 @@
+{% extends 'inner-page.html' %}
+{% load static %}
+
+{% block content %}
+
+      <!-- ======= Edit Appointment Section ======= -->
+    <section id="appointment" class="appointment section-bg">
+      <div class="container" data-aos="fade-up">
+
+        <div class="section-title">
+          <h2>Edit an Appointment</h2>
+          <p>Magnam dolores commodi suscipit. Necessitatibus eius consequatur ex aliquid fuga eum quidem. Sit sint consectetur velit. Quisquam quos quisquam cupiditate. Et nemo qui impedit suscipit alias ea. Quia fugiat sit in iste officiis commodi quidem hic quas.</p>
+        </div>
+
+        <form method="post" role="form">
+       {% csrf_token %}
+          <div class="row">
+            <div class="col-md-4 form-group">
+              <input type="text" name="name" class="form-control" id="name" value="{{ appointment.name }}" placeholder="Your Name" required>
+            </div>
+            <div class="col-md-4 form-group mt-3 mt-md-0">
+              <input type="email" class="form-control" name="email" id="email" value="{{ appointment.email }}" placeholder="Your Email" required>
+            </div>
+            <div class="col-md-4 form-group mt-3 mt-md-0">
+              <input type="tel" class="form-control" name="phone" id="phone" value="{{ appointment.phone }}" placeholder="Your Phone" required>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-4 form-group mt-3">
+              <input type="date" name="date" class="form-control datepicker" id="date" value="{{ appointment.date }}" placeholder="Appointment Date" required>
+            </div>
+            <div class="col-md-4 form-group mt-3">
+              <select name="department" id="department" class="form-select">
+                <option value="">Select Department</option>
+                <option value="Department 1" {% if appointment.department == "Department 1" %}selected{% endif %}>Department 1</option>
+                <option value="Department 2" {% if appointment.department == "Department 2" %}selected{% endif %}>Department 2</option>
+                <option value="Department 3" {% if appointment.department == "Department 3" %}selected{% endif %}>Department 3</option>
+              </select>
+            </div>
+            <div class="col-md-4 form-group mt-3">
+              <select name="doctor" id="doctor" class="form-select">
+                <option value="">Select Doctor</option>
+                <option value="Doctor 1" {% if appointment.doctor == "Doctor 1" %}selected{% endif %}>Doctor 1</option>
+                <option value="Doctor 2" {% if appointment.doctor == "Doctor 2" %}selected{% endif %}>Doctor 2</option>
+                <option value="Doctor 3" {% if appointment.doctor == "Doctor 3" %}selected{% endif %}>Doctor 3</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-group mt-3">
+            <textarea class="form-control" name="message" rows="5" placeholder="Message (Optional)">{{ appointment.message }}</textarea>
+          </div>
+
+
+          <div class="text-center mt-4">
+            <button type="submit" class="btn btn-primary">Update Appointment</button>
+            <a href="{% url 'show' %}" class="btn btn-secondary">Cancel</a>
+        </div>
+
+
+        </form>
+
+      </div>
+    </section><!-- End Appointment Section -->
+
+    </form>
+</div>
+{% endblock %}
