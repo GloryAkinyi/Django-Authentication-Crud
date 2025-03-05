@@ -51,6 +51,19 @@
             <textarea class="form-control" name="message" rows="5" placeholder="Message (Optional)">{{ appointment.message }}</textarea>
           </div>
 
+        <!---Image Field-->
+
+        <div class="form-group mt-3">
+           <label>Upload New Image:</label>
+           <input type="file" name="image" class="form-control" required>
+        </div>
+        {% if appointment.image %}
+        <p>Current Image:</p>
+        <img src="{{ appointment.image.url }}" class="img-fluid mb-2" style="height: 200px; object-fit: cover;">
+        {% endif %}
+
+        <!---End of ImageField--->
+
 
           <div class="text-center mt-4">
             <button type="submit" class="btn btn-primary">Update Appointment</button>

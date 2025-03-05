@@ -25,6 +25,7 @@ def Appoint(request):
             department=request.POST['department'],
             doctor=request.POST['doctor'],
             message=request.POST['message'],
+            image=request.FILES.get('image')  # Handle image upload
         )
         myappointments.save()
         return redirect('/show')
@@ -50,13 +51,22 @@ def edit_appointment(request, id):
         appointment.department = request.POST.get("department")
         appointment.doctor = request.POST.get("doctor")
         appointment.message = request.POST.get("message")
+
+        if 'image' in request.FILES:
+            appointment.image = request.FILES['image']
+
+
         appointment.save()
         return redirect('show')  # Redirect to the page that lists all appointments
 
     return render(request, "edit.html", {"appointment": appointment})
 
 def delete(request, id):
-    myappointment = Appointment.objects.get(id=id)
+    myappointment = get_object_or_404(Appointment, id=id)
+
+    if myappointment.image:
+        myappointment.image.delete()  # Delete image file from storage
+
     myappointment.delete()
     return redirect('/show')
 

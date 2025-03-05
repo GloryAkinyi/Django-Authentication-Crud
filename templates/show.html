@@ -8,6 +8,11 @@
     <div class="d-flex flex-wrap gap-5 container mb-3">
         {% for y in all %}
         <div class="card p-3 shadow-lg bg-secondary-subtle" style="width: 300px">
+
+          {% if y.image %}
+        <img src="{{ y.image.url }}" class="img-fluid mb-2" alt="Appointment Image" style="height: 200px; object-fit: cover;">
+        {% endif %}
+
             <p class="text-primary fw-bold">{{ y.name }}</p>
             <p> <strong>Email</strong> : {{ y.email }}</p>
             <p> <strong>Phone</strong> : {{ y.phone }}</p>

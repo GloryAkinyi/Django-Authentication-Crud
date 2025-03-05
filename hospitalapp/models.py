@@ -10,6 +10,7 @@ class Appointment(models.Model):
     department = models.CharField(max_length=200)
     doctor = models.CharField(max_length=200)
     message = models.TextField()
+    image = models.ImageField(upload_to='appointments/')  # New field
 
     def __str__(self):
         return self.name
