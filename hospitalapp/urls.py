@@ -12,4 +12,9 @@ urlpatterns = [
     path('show/', views.show, name='show'),
     path('edit/<int:id>/', views.edit_appointment, name='edit'),
     path('delete/<int:id>/', views.delete),
+    path('pay/', views.pay, name='pay'),
+    path('stk/', views.stk, name='stk'),
+    path('token/', views.token, name='token'),
+    path('transactions/', views.transactions_list, name='transactions'),
+
 ]

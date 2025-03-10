@@ -21,12 +21,16 @@
             <p> <strong>Doctor</strong> : {{ y.doctor }}</p>
             <p> <strong>Message</strong>: {{ y.message }}</p>
             <p>
-                <a href="{% url 'edit' y.id %}" class="me-5 text-warning">
+                <a href="{% url 'edit' y.id %}" class="me-3 text-warning">
                     <i class="bi bi-pencil"></i> Edit
                 </a>
 
-                <a href="/delete/{{ y.id }}" class="text-danger">
+                <a href="/delete/{{ y.id }}" class="text-danger me-3">
                     <i class="bi bi-trash"></i>Delete
+                </a>
+
+                 <a href="{% url 'pay' %}" class="text-success">
+                    <i class="bi bi-credit-card"></i>Pay
                 </a>
             </p>
         </div>
