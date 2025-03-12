@@ -163,19 +163,18 @@ def stk(request):
         }
         response = requests.post(api_url, json=request_data, headers=headers)
 
-        # Parse response
         response_data = response.json()
         transaction_id = response_data.get("CheckoutRequestID", "N/A")
         result_code = response_data.get("ResponseCode", "1")  # 0 is success, 1 is failure
 
-        # Save transaction to database
-        transaction = Transaction(
-            phone_number=phone,
-            amount=amount,
-            transaction_id=transaction_id,
-            status="Success" if result_code == "0" else "Failed"
-        )
-        transaction.save()
+        if result_code == "0":
+            transaction = Transaction(
+                phone_number=phone,
+                amount=amount,
+                transaction_id=transaction_id,
+                status="Success"
+            )
+            transaction.save()
 
         return HttpResponse(
             f"Transaction ID: {transaction_id}, Status: {'Success' if result_code == '0' else 'Failed'}")
