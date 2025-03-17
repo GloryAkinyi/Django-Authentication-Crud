@@ -1,6 +1,8 @@
 import json
 
 import requests
+from django.core.files.base import ContentFile
+from django.core.files.storage import default_storage
 from django.http import HttpResponse
 from requests.auth import HTTPBasicAuth
 
@@ -22,9 +24,18 @@ def inner(request):
     return render(request, 'inner-page.html')
 
 
-
 def Appoint(request):
     if request.method == 'POST':
+        image = request.FILES.get('image')
+
+        if image:  # Log file upload
+            print(f"Uploaded File Name: {image.name}")
+            print(f"File Size: {image.size} bytes")
+
+            # Optional: Save to disk manually (debugging)
+            path = default_storage.save(f"appointments/{image.name}", ContentFile(image.read()))
+            print(f"File saved at: {path}")
+
         myappointments = Appointment1(
             name=request.POST['name'],
             email=request.POST['email'],
@@ -33,13 +44,12 @@ def Appoint(request):
             department=request.POST['department'],
             doctor=request.POST['doctor'],
             message=request.POST['message'],
-            image=request.FILES.get('image')  # Handle image upload
+            image=image  # Assign image
         )
         myappointments.save()
         return redirect('/show')
 
-    else:
-        return render(request, 'appointment.html')
+    return render(request, 'appointment.html')
 
 
 def show(request):
@@ -158,8 +168,8 @@ def stk(request):
             "PartyB": LipanaMpesaPpassword.Business_short_code,
             "PhoneNumber": phone,
             "CallBackURL": "https://sandbox.safaricom.co.ke/mpesa/",
-            "AccountReference": "Apen Softwares",
-            "TransactionDesc": "Web Development Charges"
+            "AccountReference": "Medilab",
+            "TransactionDesc": "Appointment"
         }
         response = requests.post(api_url, json=request_data, headers=headers)
 

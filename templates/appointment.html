@@ -13,7 +13,7 @@
           <p>Magnam dolores commodi suscipit. Necessitatibus eius consequatur ex aliquid fuga eum quidem. Sit sint consectetur velit. Quisquam quos quisquam cupiditate. Et nemo qui impedit suscipit alias ea. Quia fugiat sit in iste officiis commodi quidem hic quas.</p>
         </div>
 
-        <form method="post" role="form">
+        <form method="post" role="form"   enctype="multipart/form-data">
        {% csrf_token %}
           <div class="row">
             <div class="col-md-4 form-group">
@@ -52,11 +52,10 @@
             <textarea class="form-control" name="message" rows="5" placeholder="Message (Optional)"></textarea>
           </div>
 
-            <div class="form-group mt-3">
-                <label>Upload Image:</label>
-                <input type="file" name="image" class="form-control" required>
+             <div class="form-group mt-3">
+             <label>Upload Image:</label>
+            <input type="file" name="image" class="form-control" required>
             </div>
-
 
           <div class="my-3">
             <div class="loading">Loading</div>
