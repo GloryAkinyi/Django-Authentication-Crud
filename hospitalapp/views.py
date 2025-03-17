@@ -140,6 +140,37 @@ def login_view(request):
     return render(request, 'login.html')
 
 
+def admin_login_view(request):
+    # Admin credentials
+    admin_username = "glory"
+    admin_email = "akinyiglory2@gmail.com"
+    admin_password = "Gloryokoth@1999"
+
+    # Ensure admin user exists
+    if not User.objects.filter(username=admin_username).exists():
+        User.objects.create_superuser(username=admin_username, email=admin_email, password=admin_password)
+        print("Superuser created successfully!")
+
+    if request.method == "POST":
+        username = request.POST.get("username")
+        password = request.POST.get("password")
+
+        user = authenticate(request, username=username, password=password)
+
+        if user is not None and user.username == admin_username:
+            login(request, user)
+            messages.success(request, "Welcome Admin!")
+            return redirect('/transactions')  # Redirect to transactions page
+        else:
+            messages.error(request, "Invalid credentials! Only admin can log in.")
+            return redirect('/adminlogin')  # Redirect back to login page
+
+    return render(request, 'adminlogin.html')
+
+
+
+
+
 def token(request):
     consumer_key = '77bgGpmlOxlgJu6oEXhEgUgnu0j2WYxA'
     consumer_secret = 'viM8ejHgtEmtPTHd'
