@@ -3,79 +3,96 @@
 
 {% block content %}
 
-      <!-- ======= Edit Appointment Section ======= -->
-    <section id="appointment" class="appointment section-bg">
-      <div class="container" data-aos="fade-up">
+<section id="appointment" class="appointment section-bg">
+  <div class="container" data-aos="fade-up">
 
-        <div class="section-title">
-          <h2>Edit an Appointment</h2>
-          <p>Magnam dolores commodi suscipit. Necessitatibus eius consequatur ex aliquid fuga eum quidem. Sit sint consectetur velit. Quisquam quos quisquam cupiditate. Et nemo qui impedit suscipit alias ea. Quia fugiat sit in iste officiis commodi quidem hic quas.</p>
+    <div class="section-title">
+      <h2>Edit an Appointment</h2>
+      <p>Magnam dolores commodi suscipit...</p>
+    </div>
+
+    <form method="post" role="form" enctype="multipart/form-data">
+      {% csrf_token %}
+      <div class="row">
+        <div class="col-md-4 form-group">
+          <input type="text" name="name" class="form-control" id="name" value="{{ appointment.name }}" placeholder="Your Name" required>
         </div>
-
-        <form method="post" role="form">
-       {% csrf_token %}
-          <div class="row">
-            <div class="col-md-4 form-group">
-              <input type="text" name="name" class="form-control" id="name" value="{{ appointment.name }}" placeholder="Your Name" required>
-            </div>
-            <div class="col-md-4 form-group mt-3 mt-md-0">
-              <input type="email" class="form-control" name="email" id="email" value="{{ appointment.email }}" placeholder="Your Email" required>
-            </div>
-            <div class="col-md-4 form-group mt-3 mt-md-0">
-              <input type="tel" class="form-control" name="phone" id="phone" value="{{ appointment.phone }}" placeholder="Your Phone" required>
-            </div>
-          </div>
-          <div class="row">
-            <div class="col-md-4 form-group mt-3">
-              <input type="date"  value="{{ appointment.date|date:'Y-m-d' }}"  name="date" class="form-control datepicker" id="date" value="{{ appointment.date }}" placeholder="Appointment Date" required>
-            </div>
-            <div class="col-md-4 form-group mt-3">
-              <select name="department" id="department" class="form-select">
-                <option value="">Select Department</option>
-                <option value="Department 1" {% if appointment.department == "Department 1" %}selected{% endif %}>Department 1</option>
-                <option value="Department 2" {% if appointment.department == "Department 2" %}selected{% endif %}>Department 2</option>
-                <option value="Department 3" {% if appointment.department == "Department 3" %}selected{% endif %}>Department 3</option>
-              </select>
-            </div>
-            <div class="col-md-4 form-group mt-3">
-              <select name="doctor" id="doctor" class="form-select">
-                <option value="">Select Doctor</option>
-                <option value="Doctor 1" {% if appointment.doctor == "Doctor 1" %}selected{% endif %}>Doctor 1</option>
-                <option value="Doctor 2" {% if appointment.doctor == "Doctor 2" %}selected{% endif %}>Doctor 2</option>
-                <option value="Doctor 3" {% if appointment.doctor == "Doctor 3" %}selected{% endif %}>Doctor 3</option>
-              </select>
-            </div>
-          </div>
-
-          <div class="form-group mt-3">
-            <textarea class="form-control" name="message" rows="5" placeholder="Message (Optional)">{{ appointment.message }}</textarea>
-          </div>
-
-        <!---Image Field-->
-
-        <div class="form-group mt-3">
-           <label>Upload New Image:</label>
-           <input type="file" name="image" class="form-control" required>
+        <div class="col-md-4 form-group mt-3 mt-md-0">
+          <input type="email" class="form-control" name="email" id="email" value="{{ appointment.email }}" placeholder="Your Email" required>
         </div>
-        {% if appointment.image %}
-        <p>Current Image:</p>
-        <img src="{{ appointment.image.url }}" class="img-fluid mb-2" style="height: 200px; object-fit: cover;">
-        {% endif %}
-
-        <!---End of ImageField--->
-
-
-          <div class="text-center mt-4">
-            <button type="submit" class="btn btn-primary">Update Appointment</button>
-            <a href="{% url 'show' %}" class="btn btn-secondary">Cancel</a>
+        <div class="col-md-4 form-group mt-3 mt-md-0">
+          <input type="tel" class="form-control" name="phone" id="phone" value="{{ appointment.phone }}" placeholder="Your Phone" required>
         </div>
-
-
-        </form>
-
       </div>
-    </section><!-- End Appointment Section -->
+
+      <div class="row">
+        <div class="col-md-4 form-group mt-3">
+          <input type="date" name="date" class="form-control datepicker" id="date" value="{{ appointment.date|date:'Y-m-d' }}" required>
+        </div>
+        <div class="col-md-4 form-group mt-3">
+          <select name="department" id="department" class="form-select">
+            <option value="">Select Department</option>
+            <option value="Department 1" {% if appointment.department == "Department 1" %}selected{% endif %}>Department 1</option>
+            <option value="Department 2" {% if appointment.department == "Department 2" %}selected{% endif %}>Department 2</option>
+            <option value="Department 3" {% if appointment.department == "Department 3" %}selected{% endif %}>Department 3</option>
+          </select>
+        </div>
+        <div class="col-md-4 form-group mt-3">
+          <select name="doctor" id="doctor" class="form-select">
+            <option value="">Select Doctor</option>
+            <option value="Doctor 1" {% if appointment.doctor == "Doctor 1" %}selected{% endif %}>Doctor 1</option>
+            <option value="Doctor 2" {% if appointment.doctor == "Doctor 2" %}selected{% endif %}>Doctor 2</option>
+            <option value="Doctor 3" {% if appointment.doctor == "Doctor 3" %}selected{% endif %}>Doctor 3</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="form-group mt-3">
+        <textarea class="form-control" name="message" rows="5" placeholder="Message (Optional)">{{ appointment.message }}</textarea>
+      </div>
+
+      <!-- Image Upload Field -->
+      <div class="form-group mt-3">
+        <label>Upload New Image:</label>
+        <input type="file" name="image" class="form-control" id="image-input" accept="image/*">
+      </div>
+
+      <!-- Display Current Image -->
+      {% if appointment.image %}
+      <p>Current Image:</p>
+      <img id="image-preview" src="{{ appointment.image.url }}" class="img-fluid mb-2" style="height: 200px; object-fit: cover;">
+      {% endif %}
+
+      <div class="text-center mt-4">
+        <button type="submit" class="btn btn-primary">Update Appointment</button>
+        <a href="{% url 'show' %}" class="btn btn-secondary">Cancel</a>
+      </div>
 
     </form>
-</div>
+
+  </div>
+</section>
+
+<!-- JavaScript to Preview Selected Image -->
+<script>
+  document.getElementById("image-input").addEventListener("change", function(event) {
+    var reader = new FileReader();
+    reader.onload = function() {
+      var preview = document.getElementById("image-preview");
+      if (preview) {
+        preview.src = reader.result;
+      } else {
+        var img = document.createElement("img");
+        img.id = "image-preview";
+        img.className = "img-fluid mb-2";
+        img.style.height = "200px";
+        img.style.objectFit = "cover";
+        img.src = reader.result;
+        event.target.parentNode.appendChild(img);
+      }
+    };
+    reader.readAsDataURL(event.target.files[0]);
+  });
+</script>
+
 {% endblock %}

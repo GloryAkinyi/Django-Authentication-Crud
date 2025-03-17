@@ -57,7 +57,6 @@ def show(request):
     return render(request,'show.html',{'all':all})
 
 
-
 def edit_appointment(request, id):
     appointment = get_object_or_404(Appointment1, id=id)
 
@@ -70,14 +69,20 @@ def edit_appointment(request, id):
         appointment.doctor = request.POST.get("doctor")
         appointment.message = request.POST.get("message")
 
+        # Handle image update
         if 'image' in request.FILES:
+            if appointment.image:  # Delete old image
+                appointment.image.delete()
             appointment.image = request.FILES['image']
 
-
         appointment.save()
-        return redirect('show')  # Redirect to the page that lists all appointments
+        messages.success(request, "Appointment updated successfully!")
+        return redirect('/show')  # Redirect to list of appointments
 
     return render(request, "edit.html", {"appointment": appointment})
+
+
+
 
 def delete(request, id):
     myappointment = get_object_or_404(Appointment1, id=id)
@@ -167,7 +172,7 @@ def stk(request):
             "PartyA": phone,
             "PartyB": LipanaMpesaPpassword.Business_short_code,
             "PhoneNumber": phone,
-            "CallBackURL": "https://sandbox.safaricom.co.ke/mpesa/",
+            "CallBackURL": "https://sandbox.safaricom.co.ke/mpesa/callback",
             "AccountReference": "Medilab",
             "TransactionDesc": "Appointment"
         }
@@ -178,6 +183,7 @@ def stk(request):
         result_code = response_data.get("ResponseCode", "1")  # 0 is success, 1 is failure
 
         if result_code == "0":
+            # Only save transaction if it was successful
             transaction = Transaction(
                 phone_number=phone,
                 amount=amount,
@@ -186,8 +192,11 @@ def stk(request):
             )
             transaction.save()
 
-        return HttpResponse(
-            f"Transaction ID: {transaction_id}, Status: {'Success' if result_code == '0' else 'Failed'}")
+            return HttpResponse(f"Transaction ID: {transaction_id}, Status: Success")
+        else:
+            return HttpResponse(f"Transaction Failed. Error Code: {result_code}")
+
+
 
 
 def transactions_list(request):
