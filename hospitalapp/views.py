@@ -183,8 +183,8 @@ def token(request):
 
     return render(request, 'token.html', {"token":validated_mpesa_access_token})
 
-def pay(request):
-   return render(request, 'pay.html')
+def pay(request, appointment_id):
+     return render(request, 'pay.html')
 
 
 def stk(request):
